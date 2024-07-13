@@ -123,7 +123,12 @@ function Home() {
 
         setNodes((nds) => nds.concat(newNode));
         setEdges((eds) =>
-          eds.concat({ id, source: connectingNodeId.current!, target: id })
+          eds.concat({
+            id,
+            source: connectingNodeId.current!,
+            target: id,
+            animated: true,
+          })
         );
       }
     },
