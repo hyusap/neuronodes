@@ -1,3 +1,48 @@
+export class PolyfillTextDecoderStream extends TransformStream<
+  Uint8Array,
+  string
+> {
+  readonly encoding: string;
+  readonly fatal: boolean;
+  readonly ignoreBOM: boolean;
+
+  constructor(
+    encoding: string = "utf-8",
+    {
+      fatal = false,
+      ignoreBOM = false,
+    }: ConstructorParameters<typeof TextDecoder>[1] = {}
+  ) {
+    const decoder = new TextDecoder(encoding, { fatal, ignoreBOM });
+    super({
+      transform(
+        chunk: Uint8Array,
+        controller: TransformStreamDefaultController<string>
+      ) {
+        const decoded = decoder.decode(chunk, { stream: true });
+        if (decoded.length > 0) {
+          controller.enqueue(decoded);
+        }
+      },
+      flush(controller: TransformStreamDefaultController<string>) {
+        // If {fatal: false} is in options (the default), then the final call to
+        // decode() can produce extra output (usually the unicode replacement
+        // character 0xFFFD). When fatal is true, this call is just used for its
+        // side-effect of throwing a TypeError exception if the input is
+        // incomplete.
+        const output = decoder.decode();
+        if (output.length > 0) {
+          controller.enqueue(output);
+        }
+      },
+    });
+
+    this.encoding = encoding;
+    this.fatal = fatal;
+    this.ignoreBOM = ignoreBOM;
+  }
+}
+
 // /**
 //  * TextEncoderStream polyfill based on Node.js' implementation https://github.com/nodejs/node/blob/3f3226c8e363a5f06c1e6a37abd59b6b8c1923f1/lib/internal/webstreams/encoding.js#L38-L119 (MIT License)
 //  */

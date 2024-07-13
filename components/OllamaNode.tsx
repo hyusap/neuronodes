@@ -31,7 +31,7 @@ import { Label } from "./ui/label";
 //   systemPrompt: z.string(),
 // });
 
-export default function LLMNode({ id, data }: NodeProps) {
+export default function OllamaNode({ id, data }: NodeProps) {
   // const form = useForm<z.infer<typeof LLMNodeSchema>>({
   //   resolver: zodResolver(LLMNodeSchema),
   // });
@@ -41,7 +41,9 @@ export default function LLMNode({ id, data }: NodeProps) {
   const [debouncedModelName] = useDebounce(modelName, 1000);
 
   useEffect(() => {
-    updateNodeData(id, { llmInfo: { model: debouncedModelName } });
+    updateNodeData(id, {
+      llmInfo: { model: debouncedModelName, provider: "ollama" },
+    });
   }, [debouncedModelName]);
 
   return (
@@ -64,7 +66,14 @@ export default function LLMNode({ id, data }: NodeProps) {
           </FormItem>
         </div>
       </div>
-      <Handle type="source" position={Position.Bottom} id="a" />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="output"
+        className="!size-7 flex text-black justify-center items-center"
+      >
+        +
+      </Handle>
     </>
   );
 }

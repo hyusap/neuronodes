@@ -10,6 +10,19 @@ export interface NodeData {
   llmInfo: LLMInfo;
 }
 
-export interface LLMInfo {
+// export interface LLMInfo {
+//   model: string;
+
+// }
+export interface AnthropicInfo {
   model: string;
+  apiKey: string;
+  provider: "anthropic";
 }
+
+export interface OllamaInfo {
+  model: string;
+  provider: "ollama";
+}
+
+export type LLMInfo = AnthropicInfo | OllamaInfo;

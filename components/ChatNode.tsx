@@ -9,9 +9,9 @@ import {
 } from "@xyflow/react";
 import { Textarea } from "@/components/ui/textarea";
 import { useCallback, useEffect, useState } from "react";
-import { NodeData } from "@/lib/types";
+import { LLMInfo, NodeData } from "@/lib/types";
 // import { continueConversation } from "@/app/actions";
-import { continueConversation } from "@/lib/ai";
+import { runAI } from "@/lib/ai";
 import { readStreamableValue } from "ai/rsc";
 import { get } from "http";
 import { useDebounce } from "use-debounce";
@@ -48,7 +48,7 @@ export default function ChatNode({ id, data, selected }: NodeProps) {
 
   useEffect(() => {
     const pastMessages = nodeData?.messages || [];
-    const modelName = nodeData?.llmInfo?.model || "";
+    const llmInfo = nodeData?.llmInfo || ({} as LLMInfo);
     updateNodeData(id, { messages: [...pastMessages, currentMessage] });
 
     if (type !== "assistant") {
@@ -62,13 +62,11 @@ export default function ChatNode({ id, data, selected }: NodeProps) {
 
     async function getResponse() {
       console.trace(pastMessages);
-      const response = await continueConversation(modelName, pastMessages);
+      const response = runAI(llmInfo, pastMessages);
       if (response) {
         setValue("");
-        let sum = "";
         for await (const content of response) {
-          sum += content;
-          setValue(sum);
+          setValue(content as string);
         }
       }
     }
