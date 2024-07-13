@@ -42,24 +42,10 @@ const initialNodes = [
     position: { x: 0, y: 600 },
     data: { type: "assistant" },
   },
-  // {
-  //   id: "4",
-  //   type: "previewNode",
-  //   position: { x: 0, y: 900 },
-  //   data: {},
-  // },
-  // {
-  //   id: "5",
-  //   type: "previewNode",
-  //   position: { x: 900, y: 600 },
-  //   data: {},
-  // },
 ];
 const initialEdges = [
   { id: "e1-2", source: "1", target: "2" },
   { id: "e2-3", source: "2", target: "3" },
-  // { id: "e2-5", source: "2", target: "5" },
-  // { id: "e3-4", source: "3", target: "4" },
 ];
 
 let id = 6;
@@ -150,6 +136,7 @@ function Home() {
         onConnectStart={onConnectStart}
         onConnectEnd={onConnectEnd}
         proOptions={{ hideAttribution: true }}
+        fitView={true}
       >
         <Background />
         <Controls />

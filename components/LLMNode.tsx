@@ -56,6 +56,7 @@ export default function LLMNode({ id, data }: NodeProps) {
 
             <Input
               placeholder="llama3"
+              className="w-96"
               value={modelName}
               onChange={(e) => setModelName(e.target.value)}
               // {...field}

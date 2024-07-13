@@ -3,10 +3,9 @@ import { CoreMessage, streamText } from "ai";
 // import { openai } from '@ai-sdk/openai';
 // import { anthropic } from "@ai-sdk/anthropic";
 import { ollama } from "ollama-ai-provider";
-import { TextDecoderStream } from "@/polyfills/textencoderstream";
+// import { TextDecoderStream } from "@/polyfills/textencoderstream";
+import "@stardazed/streams-polyfill";
 import { toast } from "sonner";
-
-globalThis.TextDecoderStream ||= TextDecoderStream;
 
 export async function continueConversation(
   model: string,
@@ -27,7 +26,10 @@ export async function continueConversation(
     // return stream.value;
     return result.textStream;
   } catch (error) {
-    // console.error(error);
-    toast.error(error.message);
+    if (error instanceof Error) {
+      toast.error(error.message);
+    } else {
+      toast.error("An unknown error occurred");
+    }
   }
 }

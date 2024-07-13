@@ -3,9 +3,9 @@ import {
   Position,
   useHandleConnections,
   useNodesData,
+  NodeProps,
 } from "@xyflow/react";
 import { Hand } from "lucide-react";
-import { NodeProps } from "postcss";
 
 export default function PreviewNode({ data }: NodeProps) {
   const connections = useHandleConnections({
