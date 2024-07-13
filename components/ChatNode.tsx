@@ -15,6 +15,7 @@ import { continueConversation } from "@/lib/ai";
 import { readStreamableValue } from "ai/rsc";
 import { get } from "http";
 import { useDebounce } from "use-debounce";
+import { cn } from "@/lib/utils";
 
 export type CounterNode = Node<
   {
@@ -24,7 +25,7 @@ export type CounterNode = Node<
   "chatNode"
 >;
 
-export default function ChatNode({ id, data }: NodeProps) {
+export default function ChatNode({ id, data, selected }: NodeProps) {
   const { type } = data;
   const { updateNodeData } = useReactFlow();
   const [value, setValue] = useState("");
@@ -85,7 +86,12 @@ export default function ChatNode({ id, data }: NodeProps) {
   return (
     <>
       <Handle position={Position.Top} type="target" id="input" />
-      <div className="bg-gray-800 rounded-lg shadow-md border border-gray-700 py-4">
+      <div
+        className={cn(
+          "bg-gray-800 rounded-lg shadow-md border border-gray-700 py-4 transition-all duration-300 outline-gray-700",
+          selected && "outline outline-2 "
+        )}
+      >
         <h2 className="text-lg font-bold mb-4 text-white px-4 border-b border-gray-700 pb-4">
           {type === "user" ? "User" : "Assistant"}
         </h2>
@@ -102,7 +108,14 @@ export default function ChatNode({ id, data }: NodeProps) {
           )}
         </div>
       </div>
-      <Handle type="source" position={Position.Bottom} id="output" />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        id="output"
+        className="!size-7 flex text-black justify-center items-center"
+      >
+        +
+      </Handle>
     </>
   );
 }

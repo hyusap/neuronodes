@@ -1,6 +1,7 @@
 "use client";
 
 import ChatNode from "@/components/ChatNode";
+import InfoNode from "@/components/InfoNode";
 import LLMNode from "@/components/LLMNode";
 import PreviewNode from "@/components/PreviewNode";
 import {
@@ -42,10 +43,16 @@ const initialNodes = [
     position: { x: 0, y: 600 },
     data: { type: "assistant" },
   },
+  {
+    id: "4",
+    type: "infoNode",
+    position: { x: 500, y: 250 },
+    data: {},
+  },
 ];
 const initialEdges = [
-  { id: "e1-2", source: "1", target: "2" },
-  { id: "e2-3", source: "2", target: "3" },
+  { id: "e1-2", source: "1", target: "2", animated: true },
+  { id: "e2-3", source: "2", target: "3", animated: true },
 ];
 
 let id = 6;
@@ -53,7 +60,7 @@ const getId = () => `${id++}`;
 
 function Home() {
   const nodeTypes = useMemo(
-    () => ({ llmNode: LLMNode, chatNode: ChatNode, previewNode: PreviewNode }),
+    () => ({ llmNode: LLMNode, chatNode: ChatNode, infoNode: InfoNode }),
     []
   );
 
